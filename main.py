@@ -7,6 +7,7 @@ from asteroidfield import AsteroidField
 from Shot import Shot
 #source venv/bin/activate
 
+
 def main():
 
     #Initialize the game environment
@@ -14,6 +15,7 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     dt = 0
+
 
     #Initialize all the empty groups to store the game objects
     updatable = pygame.sprite.Group()
@@ -29,17 +31,27 @@ def main():
     Player.containers = (updatable, drawable)
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT /2)
 
+
+
     Shot.containers = (shots, updatable, drawable)
     
-
     while True:
         
         #Allows the user to close out the window and end the game loop. 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return  
-              
+    
         updatable.update(dt)
+
+
+        screen.fill("black")
+        #Setup the player score text box
+        font = pygame.font.SysFont("Arial", 25, bold = True)
+        text = font.render(f"Player Score:{player.score}", True, "white" )
+        text_rect = text.get_rect()
+        text_rect.center = (640, 30)
+        screen.blit(text, text_rect)
 
         for asteroid in asteroids:
             if asteroid.check_collisions(player):
@@ -49,8 +61,7 @@ def main():
                 if bullet.check_collisions(asteroid):
                     asteroid.split()
                     bullet.kill()
-
-        screen.fill("black")
+                    player.score += 1
 
         #Create all drawable game objects in the play field.
         for object in drawable:

@@ -2,6 +2,7 @@ import pygame
 from circleshape import CircleShape
 import random
 from constants import *
+from player import *
 
 class Asteroid(CircleShape):
     def __init__(self, x, y, radius):
@@ -12,6 +13,7 @@ class Asteroid(CircleShape):
 
     def update(self, dt):
         self.position +=  self.velocity * dt
+        #Allow asteroids to wrap around the screen.
         if self.position.x > SCREEN_WIDTH:
             self.position.x = 0
         if self.position.x < 0:
